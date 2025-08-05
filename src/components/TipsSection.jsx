@@ -1,27 +1,253 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from './Card';
 
 const TipsSection = ({ destination }) => {
+  const [checkedItems, setCheckedItems] = useState(new Set());
+
+  const toggleItem = (id) => {
+    const newChecked = new Set(checkedItems);
+    if (newChecked.has(id)) {
+      newChecked.delete(id);
+    } else {
+      newChecked.add(id);
+    }
+    setCheckedItems(newChecked);
+  };
+
+  const orlandoTips = [
+    {
+      title: "Sistemas de 'Fura-Fila': Genie+ e Universal Express Pass",
+      content: "O antigo FastPass+ da Disney foi substituído por um sistema pago, e a Universal tem seu próprio passe para agilizar as filas. Entender como eles funcionam pode salvar muito tempo.",
+      details: [
+        {
+          subtitle: "Disney: Genie+ e Lightning Lane",
+          items: [
+            "Genie+: É um serviço pago (a partir de US$ 15 por pessoa, por dia) que permite agendar horários para entrar em filas rápidas em várias atrações.",
+            "Lightning Lane: É o nome da fila rápida do Genie+. Algumas atrações mais populares, como Star Wars: Rise of the Resistance, não estão inclusas no Genie+.",
+            "Vale a pena? Na baixa temporada (Setembro), pode não ser essencial para todos os parques, mas é altamente recomendado para o Magic Kingdom e Hollywood Studios."
+          ]
+        },
+        {
+          subtitle: "Universal: Universal Express Pass",
+          items: [
+            "É um serviço pago (o preço varia bastante) que permite usar a fila rápida (Express Lane) em quase todas as atrações.",
+            "A versão ilimitada (Unlimited) permite que você repita as atrações quantas vezes quiser.",
+            "Vale a pena? Se você quer evitar filas de forma geral e aproveitar o máximo de atrações em um único dia, o Express Pass é um excelente investimento."
+          ]
+        }
+      ]
+    },
+    {
+      title: "Checklist Essencial (O que levar na mochila)",
+      content: "Esses itens farão toda a diferença nos dias de parque, ajudando a evitar imprevistos e economizar tempo e dinheiro.",
+      checklist: [
+        { id: 'agua', text: 'Garrafa de água reutilizável' },
+        { id: 'protetor', text: 'Protetor solar e óculos de sol' },
+        { id: 'chuva', text: 'Capa de chuva ou poncho' },
+        { id: 'snacks', text: 'Snacks e pequenos lanches' },
+        { id: 'carregador', text: 'Carregador portátil para o celular' },
+        { id: 'documentos', text: 'Documentos essenciais (passaporte, visto, vouchers)' },
+        { id: 'dinheiro', text: 'Dinheiro trocado para gorjetas e compras pequenas' },
+        { id: 'primeiros-socorros', text: 'Kit de primeiros socorros (curativos, analgésicos)' }
+      ]
+    },
+    {
+      title: "Informações sobre Ingressos e Parques",
+      content: "Dicas importantes sobre como funcionam os ingressos e regras dos parques.",
+      details: [
+        {
+          subtitle: "Regras Importantes",
+          items: [
+            "Validade dos Ingressos: A maioria dos ingressos para múltiplos dias na Disney tem uma validade de 14 dias a partir do primeiro uso.",
+            "Regras de Entrada: Você pode entrar e sair do mesmo parque quantas vezes quiser no mesmo dia. Para visitar mais de um parque por dia, é necessário ter a opção Park Hopper (Disney) ou Park-to-Park (Universal).",
+            "Agendamento de Visita: O sistema da Disney Park Pass exige que você reserve a visita aos parques com antecedência.",
+            "Horários de Funcionamento: Os horários variam. Cheque os horários atualizados nos aplicativos oficiais My Disney Experience (Disney) e Universal Orlando Resort (Universal)."
+          ]
+        }
+      ]
+    }
+  ];
+
+  const japaoTips = [
+    {
+      title: "JR Pass e Transporte",
+      content: "O JR Pass é essencial para economizar no transporte, mas tem regras específicas.",
+      details: [
+        {
+          subtitle: "Como usar o JR Pass",
+          items: [
+            "Deve ser ativado assim que chegar no Japão, no aeroporto ou em uma estação JR.",
+            "Válido para todos os trens JR, incluindo shinkansen (exceto Nozomi e Mizuho).",
+            "Não é válido para metrô e trens privados nas cidades.",
+            "Sempre carregue o passe físico - não há versão digital."
+          ]
+        }
+      ]
+    },
+    {
+      title: "Dinheiro e Pagamentos",
+      content: "O Japão ainda é muito baseado em dinheiro, então é importante estar preparado.",
+      details: [
+        {
+          subtitle: "Dicas de Pagamento",
+          items: [
+            "Sempre tenha dinheiro em espécie - muitos lugares não aceitam cartão.",
+            "ATMs dos 7-Eleven e bancos Japan Post aceitam cartões internacionais.",
+            "IC Cards (Suica/Pasmo) são úteis para transporte e algumas compras.",
+            "Gorjetas não são costumeiras no Japão - pode até ser ofensivo."
+          ]
+        }
+      ]
+    },
+    {
+      title: "Etiqueta e Cultura",
+      content: "Respeitar a cultura local é fundamental para uma boa experiência.",
+      checklist: [
+        { id: 'silencio', text: 'Mantenha silêncio no transporte público' },
+        { id: 'sapatos', text: 'Tire os sapatos ao entrar em casas e alguns restaurantes' },
+        { id: 'reverence', text: 'Faça uma pequena reverência ao cumprimentar' },
+        { id: 'chopsticks', text: 'Não espete os hashis na comida verticalmente' },
+        { id: 'onsen', text: 'Lave-se completamente antes de entrar no onsen' },
+        { id: 'foto', text: 'Não tire fotos de pessoas sem permissão' }
+      ]
+    },
+    {
+      title: "Comunicação",
+      content: "Dicas para se comunicar melhor no Japão.",
+      details: [
+        {
+          subtitle: "Ferramentas Úteis",
+          items: [
+            "Google Translate com câmera para traduzir placas e cardápios.",
+            "Baixe mapas offline - nem sempre há WiFi disponível.",
+            "Aprenda frases básicas: arigatou gozaimasu (obrigado), sumimasen (desculpe).",
+            "Muitos japoneses entendem inglês básico, mas são tímidos para falar."
+          ]
+        }
+      ]
+    }
+  ];
+
+  const tips = destination === 'orlando' ? orlandoTips : japaoTips;
+
   return (
-    <Card>
-      <Card.Header>
-        <h2 className="heading-3">
-          Dicas - {destination === 'orlando' ? 'Orlando' : 'Japão'}
-        </h2>
-        <p className="body-small">
-          Dicas importantes e informações úteis
-        </p>
-      </Card.Header>
-      <Card.Content>
-        <div className="text-center py-12">
-          <div className="text-6xl mb-4">💡</div>
-          <h3 className="heading-4 mb-2">Em desenvolvimento</h3>
-          <p className="body-base">
-            A seção de dicas estará disponível em breve
+    <div className="space-y-6">
+      <Card>
+        <Card.Header>
+          <h2 className="heading-3">
+            Dicas Importantes - {destination === 'orlando' ? 'Orlando' : 'Japão'}
+          </h2>
+          <p className="body-small">
+            Informações essenciais para aproveitar melhor sua viagem
           </p>
-        </div>
-      </Card.Content>
-    </Card>
+        </Card.Header>
+      </Card>
+
+      {tips.map((tip, index) => (
+        <Card key={index} elevated>
+          <Card.Header>
+            <h3 className="heading-4 text-blue-600">
+              {tip.title}
+            </h3>
+            <p className="body-base">
+              {tip.content}
+            </p>
+          </Card.Header>
+          
+          <Card.Content>
+            {tip.details && (
+              <div className="space-y-6">
+                {tip.details.map((detail, detailIndex) => (
+                  <div key={detailIndex}>
+                    <h4 className="font-semibold text-gray-800 mb-3">
+                      {detail.subtitle}
+                    </h4>
+                    <div className="space-y-2">
+                      {detail.items.map((item, itemIndex) => (
+                        <div key={itemIndex} className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                          <p className="body-base">{item}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {tip.checklist && (
+              <div className="space-y-3">
+                {tip.checklist.map((item) => {
+                  const isChecked = checkedItems.has(item.id);
+                  
+                  return (
+                    <div
+                      key={item.id}
+                      className={`
+                        flex items-center gap-3 p-3 rounded-lg border transition-all duration-200 cursor-pointer
+                        ${isChecked 
+                          ? 'bg-green-50 border-green-200' 
+                          : 'bg-gray-50 border-gray-200 hover:border-gray-300'
+                        }
+                      `}
+                      onClick={() => toggleItem(item.id)}
+                    >
+                      <div className={`
+                        w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-200
+                        ${isChecked 
+                          ? 'bg-green-600 border-green-600' 
+                          : 'border-gray-300 bg-white'
+                        }
+                      `}>
+                        {isChecked && (
+                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        )}
+                      </div>
+                      
+                      <span className={`
+                        font-medium transition-all duration-200
+                        ${isChecked 
+                          ? 'text-green-800 line-through' 
+                          : 'text-gray-800'
+                        }
+                      `}>
+                        {item.text}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </Card.Content>
+        </Card>
+      ))}
+
+      {/* Additional Tips Card */}
+      <Card>
+        <Card.Content>
+          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex gap-2">
+              <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+              <div>
+                <h4 className="font-medium text-blue-800">
+                  💡 Dica Extra
+                </h4>
+                <p className="text-sm text-blue-700 mt-1">
+                  {destination === 'orlando' 
+                    ? 'Baixe os aplicativos oficiais dos parques antes da viagem e configure sua conta. Isso te poupará tempo precioso no primeiro dia!'
+                    : 'Considere comprar um pocket WiFi no aeroporto. Ter internet constante facilitará muito sua navegação e comunicação.'
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+        </Card.Content>
+      </Card>
+    </div>
   );
 };
 

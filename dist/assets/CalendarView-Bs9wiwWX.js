@@ -1,0 +1,1 @@
+import{j as a,C as d}from"./index-D7RSFwsc.js";const i=({itinerary:e})=>a.jsx("div",{className:"calendar-grid",children:e.map(s=>a.jsxs(d,{className:"calendar-day",children:[a.jsx("div",{className:"day-number",children:s.day}),a.jsx("div",{className:"day-activity",children:s.title})]},s.day))});export{i as default};

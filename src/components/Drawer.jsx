@@ -85,19 +85,18 @@ const Drawer = ({
         />
       )}
 
-      {/* Float Toggle Button */}
-      <Button
-        variant="secondary"
-        size="sm"
-        icon={<MenuIcon />}
-        onClick={onToggle}
-        className={`
-          fixed top-4 left-4 z-30 shadow-lg
-          ${isMobile ? 'block' : 'hidden md:block'}
-        `}
-        title="Toggle menu"
-        aria-label="Toggle navigation menu"
-      />
+      {/* Mobile Toggle Button - Only show when drawer is closed */}
+      {isMobile && !isOpen && (
+        <Button
+          variant="secondary"
+          size="sm"
+          icon={<MenuIcon />}
+          onClick={onToggle}
+          className="fixed top-4 left-4 z-30 shadow-lg md:hidden"
+          title="Abrir menu"
+          aria-label="Abrir menu de navegação"
+        />
+      )}
     </>
   );
 };

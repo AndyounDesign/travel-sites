@@ -4,6 +4,7 @@ import Card from './components/Card';
 import Navigation from './components/Navigation';
 import Drawer from './components/Drawer';
 import TravelDay from './components/TravelDay';
+import { orlandoItinerary, japaoItinerary } from './data/itineraries';
 
 // Lazy load heavy components for better performance
 const CalendarView = lazy(() => import('./components/CalendarView'));
@@ -110,63 +111,6 @@ const App = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
       )
-    }
-  ];
-
-  // Sample data - would come from a data layer in real app
-  const orlandoItinerary = [
-    {
-      day: 1,
-      title: "Chegada em Orlando",
-      description: "Chegue em Orlando (MCO), retire o carro alugado e faça o check-in no hotel. Aproveite o restante do dia para descansar e se aclimatar.",
-      activities: []
-    },
-    {
-      day: 2,
-      title: "✨ Magic Kingdom",
-      description: "O dia começa no parque mais icônico da Disney! Chegue 30 minutos antes do horário de abertura.",
-      activities: [
-        {
-          id: 'mk-1',
-          name: "Seven Dwarfs Mine Train",
-          tip: "A atração mais concorrida da Fantasyland. Vá assim que o parque abrir.",
-          time: "9:00"
-        },
-        {
-          id: 'mk-2',
-          name: "Peter Pan's Flight",
-          tip: "Outra atração clássica que cria filas longas rapidamente.",
-          time: "9:30"
-        },
-        {
-          id: 'mk-3',
-          name: "Jungle Cruise",
-          tip: "Passeio de barco descontraído com piadas de guias hilárias.",
-          time: "11:00"
-        },
-        {
-          id: 'mk-4',
-          name: "Haunted Mansion",
-          tip: "Uma das atrações mais icônicas da Disney, não pode faltar.",
-          time: "14:00"
-        }
-      ]
-    }
-  ];
-
-  const japaoItinerary = [
-    {
-      day: 1,
-      title: "Chegada em Tóquio",
-      description: "Chegue ao Aeroporto de Narita ou Haneda, pegue o trem para o centro de Tóquio e faça check-in no hotel.",
-      activities: [
-        {
-          id: 'jp-1',
-          name: "JR Pass Exchange",
-          tip: "Troque seu voucher do JR Pass no aeroporto",
-          time: "Após chegada"
-        }
-      ]
     }
   ];
 
