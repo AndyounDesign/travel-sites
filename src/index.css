@@ -1,11 +1,67 @@
+/* Import Design System */
+@import './styles/design-system.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Estilos customizados para o planejador de viagens */
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc;
+  color: #334155;
+  line-height: 1.6;
+}
+
+/* Remove default focus outline and add custom one */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.not-sr-only {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Legacy compatibility - will be removed */
 .tab-button {
-  @apply border-b-2 border-transparent;
+  @apply border-b-2 border-transparent transition-colors duration-200;
 }
 
 .tab-button:hover {
@@ -16,65 +72,42 @@
   @apply border-blue-600 text-blue-600;
 }
 
-.sub-nav-button {
-  @apply p-2 rounded-lg transition-colors duration-200;
-}
-
-.sub-nav-button:hover {
-  @apply bg-gray-200;
-}
-
-.sub-nav-button.active {
-  @apply bg-blue-100 text-blue-600;
-}
-
 .checkbox-item {
   @apply flex items-start space-x-3 mb-2;
-}
-
-.checkbox-item input[type="checkbox"] {
-  @apply mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded;
-}
-
-.checkbox-item label {
-  @apply text-sm font-medium text-gray-700 cursor-pointer;
 }
 
 .text-auxiliar {
   @apply block text-xs text-gray-500 mt-1 ml-7;
 }
 
+/* Calendar styles - simplified */
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+  gap: 8px;
   margin-top: 1rem;
 }
 
 .calendar-day {
-  @apply p-2 h-20 flex flex-col justify-between;
+  @apply p-3 min-h-[80px] flex flex-col justify-between rounded-lg border border-gray-200 bg-white transition-all duration-200 hover:shadow-sm;
 }
 
 .day-number {
-  @apply text-lg font-bold;
+  @apply text-lg font-semibold text-gray-800;
 }
 
 .day-activity {
-  @apply text-xs leading-tight;
+  @apply text-sm text-gray-600 leading-tight mt-2;
 }
 
-.roteiro-sub-content {
-  @apply space-y-6;
-}
-
-/* Responsividade para dispositivos móveis */
+/* Mobile responsive */
 @media (max-width: 768px) {
   .calendar-day {
-    @apply h-16 p-1;
+    @apply min-h-[60px] p-2;
   }
   
   .day-number {
-    @apply text-sm;
+    @apply text-base;
   }
   
   .day-activity {
