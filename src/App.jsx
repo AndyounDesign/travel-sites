@@ -1,16 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const App = () => {
     const [activePage, setActivePage] = useState('orlando');
     const [activeTab, setActiveTab] = useState('roteiro');
     const [roteiroView, setRoteiroView] = useState('lista');
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isDrawerCollapsed, setIsDrawerCollapsed] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Detecta mudanças no tamanho da tela
+    useEffect(() => {
+        const checkScreenSize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        
+        checkScreenSize();
+        window.addEventListener('resize', checkScreenSize);
+        
+        return () => window.removeEventListener('resize', checkScreenSize);
+    }, []);
 
     // Funções para gerenciamento das abas
     const setPage = (page) => {
         setActivePage(page);
         setActiveTab('roteiro');
-        setIsDrawerOpen(false); // Fecha o drawer ao selecionar uma página
+        if (isMobile) {
+            setIsDrawerOpen(false); // Fecha o drawer ao selecionar uma página no mobile
+        }
+    };
+
+    // Função para toggle do drawer
+    const toggleDrawer = () => {
+        if (isMobile) {
+            // No mobile: abre/fecha completamente
+            setIsDrawerOpen(!isDrawerOpen);
+        } else {
+            // No desktop: colapsa/expande
+            setIsDrawerCollapsed(!isDrawerCollapsed);
+        }
     };
 
     const handleRoteiroViewChange = (view) => {
@@ -1469,50 +1496,112 @@ const App = () => {
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row">
             {/* Sidebar de navegação */}
-            <div className={`fixed inset-y-0 left-0 transform ${isDrawerOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0 transition-transform duration-300 ease-in-out bg-white p-4 md:p-8 shadow-md md:w-64 z-20`}>
-                <div className="flex items-center justify-between mb-8">
-                    <div className="text-2xl font-bold text-[#1e40af]">Planos</div>
+            <div className={`fixed inset-y-0 left-0 transform transition-all duration-300 ease-in-out bg-white shadow-md z-20
+                ${isDrawerOpen ? 'translate-x-0' : '-translate-x-full'} 
+                md:relative md:translate-x-0 
+                ${isDrawerCollapsed ? 'md:w-16' : 'md:w-64'}`}>
+                
+                {/* Header do drawer */}
+                <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200">
+                    <div className={`text-2xl font-bold text-[#1e40af] transition-opacity duration-300 ${isDrawerCollapsed ? 'md:opacity-0 md:w-0 md:overflow-hidden' : 'opacity-100'}`}>
+                        Planos
+                    </div>
+                    
+                    {/* Botão de toggle - sempre visível */}
                     <button
-                        className="md:hidden p-2 rounded-full hover:bg-gray-200 transition-colors"
-                        onClick={() => setIsDrawerOpen(false)}
+                        className="p-2 rounded-full hover:bg-gray-200 transition-colors"
+                        onClick={toggleDrawer}
+                        title={isDrawerCollapsed ? "Expandir menu" : "Recolher menu"}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                        {/* Ícone diferente baseado no estado */}
+                        {isMobile ? (
+                            // Mobile: ícone de fechar
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        ) : (
+                            // Desktop: ícone de hamburger ou seta
+                            isDrawerCollapsed ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                </svg>
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7M19 19l-7-7 7-7" />
+                                </svg>
+                            )
+                        )}
                     </button>
                 </div>
-                <ul className="space-y-4">
-                    <li>
-                        <button
-                            className={`w-full text-left font-medium py-3 px-4 rounded-lg transition-colors duration-200 ${activePage === 'orlando' ? 'bg-[#1e40af] text-white shadow-lg' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
-                            onClick={() => setPage('orlando')}
-                        >
-                            Orlando
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            className={`w-full text-left font-medium py-3 px-4 rounded-lg transition-colors duration-200 ${activePage === 'japao' ? 'bg-[#1e40af] text-white shadow-lg' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
-                            onClick={() => setPage('japao')}
-                        >
-                            Japão
-                        </button>
-                    </li>
-                </ul>
+
+                {/* Menu de navegação */}
+                <div className="p-4 md:p-6">
+                    <ul className="space-y-3">
+                        <li>
+                            <button
+                                className={`w-full text-left font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center gap-3
+                                    ${activePage === 'orlando' ? 'bg-[#1e40af] text-white shadow-lg' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
+                                onClick={() => setPage('orlando')}
+                                title="Orlando"
+                            >
+                                {/* Ícone do Orlando */}
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                                <span className={`transition-opacity duration-300 ${isDrawerCollapsed ? 'md:opacity-0 md:w-0 md:overflow-hidden' : 'opacity-100'}`}>
+                                    Orlando
+                                </span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className={`w-full text-left font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center gap-3
+                                    ${activePage === 'japao' ? 'bg-[#1e40af] text-white shadow-lg' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
+                                onClick={() => setPage('japao')}
+                                title="Japão"
+                            >
+                                {/* Ícone do Japão */}
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span className={`transition-opacity duration-300 ${isDrawerCollapsed ? 'md:opacity-0 md:w-0 md:overflow-hidden' : 'opacity-100'}`}>
+                                    Japão
+                                </span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            {/* Botão para abrir o drawer no mobile */}
-            <div className="flex-1 p-4 md:p-8">
+
+            {/* Conteúdo principal */}
+            <div className={`flex-1 transition-all duration-300 ${isDrawerCollapsed ? 'md:ml-0' : 'md:ml-0'}`}>
+                {/* Botão para abrir o drawer no mobile */}
                 <button
                     className="md:hidden fixed top-4 left-4 z-30 p-2 rounded-full bg-white shadow-lg"
-                    onClick={() => setIsDrawerOpen(true)}
+                    onClick={toggleDrawer}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
-                {activePage === 'orlando' && orlandoContent}
-                {activePage === 'japao' && japaoContent}
+
+                {/* Botão para toggle no desktop */}
+                <button
+                    className="hidden md:block fixed top-4 left-4 z-30 p-2 rounded-full bg-white shadow-lg hover:shadow-xl transition-shadow"
+                    onClick={toggleDrawer}
+                    title={isDrawerCollapsed ? "Expandir menu" : "Recolher menu"}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
+                <div className="p-4 md:p-8">
+                    {activePage === 'orlando' && orlandoContent}
+                    {activePage === 'japao' && japaoContent}
+                </div>
             </div>
+
             {/* Overlay para o fundo escurecido em mobile */}
             {isDrawerOpen && (
                 <div
